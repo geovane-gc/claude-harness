@@ -1,0 +1,25 @@
+The request is the user's word to merge and to deploy to the environments it names: never ask for
+it again. A merge of an infrastructure or deploy-config pull request applies it: read the plan its
+CI posted first. Production is the user's: show the exact command and wait.
+
+The scripts are in `../../scripts/` and `../../../../tools/commit/scripts/`.
+
+1. List the pull requests: the ones the request names, or
+   `gh search prs --author @me --state open --json url,title`.
+   Run `watch-pr.sh <pr url> --max-wait 60` on each: its verdict is that pull request's state.
+2. Order them: each one after what its `## Depends on` names (`deps.sh`), and the one that tells
+   people about a change after the one that ships it. A stack counts as one, its bottom pull
+   request, the one on the default branch: `merge.sh` on it folds the others into it first. Trail
+   the order as a `decision`.
+3. In that order: `APPROVED` → `merge.sh <pr url>`, then `watch-pr.sh <pr url>` until `MERGED` or
+   `RELEASE_FAILED`. `COMMENTS`, `CONFLICT` or `CI_FAILED` → the **PR babysit** playbook for that
+   pull request.
+4. Pull requests that only lack an approval, with every check their base requires green: when
+   `${user_config.review_channel}` is set, one message in that Slack channel listing them in merge
+   order; otherwise list them in the reply.
+5. Deploy what the request names, a service after the ones it calls, the way the repo deploys (its
+   `CLAUDE.md`, README or deploy workflow). Never deploy to production: show the exact command.
+6. Confirm the version running in each environment you deployed to, by reading it, never writing.
+
+**Reply:** each pull request with its final verdict, what was deployed where with the run links,
+and what waits on whom.
