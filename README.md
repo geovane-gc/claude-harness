@@ -7,8 +7,8 @@ playbook por tipo de trabalho.
 ## Instalação
 
 ```
-/plugin marketplace add geovane-gc/claude-harness
-/plugin install geovane@geovane
+/plugin marketplace add git@github.com:geovane-gc/claude-harness.git
+/plugin install geovane@geovane-harness
 /geovane:setup
 ```
 
@@ -98,5 +98,5 @@ depois da skill `geovane:commit`. Fora deles, a sua sessão fica como está.
 
 ## Mudanças
 
-Para mudar algo, edite este repo e atualize o plugin (`/plugin marketplace update geovane`). Uma
+Para mudar algo, edite este repo e atualize o plugin (`/plugin marketplace update geovane-harness`). Uma
 edição feita direto no cache do plugin some no próximo update.
