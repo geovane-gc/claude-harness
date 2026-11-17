@@ -11,7 +11,7 @@ and what a run teaches goes back into the harness.
 ## Principles
 
 Before anything else, in one message, load with `ToolSearch`
-`select:TaskCreate,TaskUpdate,mcp__claude_ai_Linear__get_issue,mcp__claude_ai_Linear__list_issues,mcp__claude_ai_Linear__save_issue,mcp__claude_ai_Slack__slack_send_message`
+`select:TaskCreate,TaskUpdate`
 and read these principles:
 
 - ${CLAUDE_PLUGIN_ROOT}/skills/principles/principle-laziness-protocol/SKILL.md
@@ -62,7 +62,6 @@ green"; without that evidence, the step runs.
 | **Merge and deploy** `references/playbooks/merge-deploy.md` | Pull requests to merge, in what order, to deploy, or to get approved; "what is open and what is missing". |
 | **PR review** `references/playbooks/pr-review.md` | A pull request to judge: someone else's, or your own before asking for its approval. |
 | **Harness change** `references/playbooks/harness-change.md` | A skill, agent, hook, principle, mod, `CLAUDE.md` or `settings.json` to add or change, even mid-playbook. |
-| **Request** `references/playbooks/request.md` | What "During any playbook" routes to this playbook. |
 
 When a reason in the request is wrong, still reach its goal, and say in
 the reply what the request got wrong.
@@ -71,11 +70,7 @@ the reply what the request got wrong.
 
 Before Bug fix, Feature or Refactoring, write the request to
 `${user_config.workspace}/.runs/<task id or subject>/task.md`,
-in the run folder. For a Linear card, run
-`WORKSPACE="${user_config.workspace}" ${CLAUDE_PLUGIN_ROOT}/skills/engine/engage/scripts/start-task.sh <task id>`,
-which writes it; write a message as given. An open blocker the change builds on stops the run;
-with any other open blocker, run the script again with `--start` so the
-card moves.
+in the run folder, as given. A run that starts again keeps the `task.md` it already has.
 
 Then, for the repo the change lands in:
 
@@ -93,9 +88,8 @@ Then, for the repo the change lands in:
   touches → a change of its own, in this run, through the playbook
   that fits. A problem is in the code the change touches when its
   code, or a call to its code, is in a file the change modifies.
-- Anything else that needs doing outside the request → the Request
-  playbook when it is in the scope of the Linear team the run works in; otherwise
-  tell it in the reply.
+- Anything else that needs doing outside the request → a `problem` note
+  in the **trail**, and a line in the reply with what you found and its evidence.
 - A skill, agent, script or hook that is broken → the Harness change
   playbook. Never work around it in silence.
 - Anything worth keeping (a decision, a fact, work outside the
@@ -106,9 +100,7 @@ Then, for the repo the change lands in:
 
 Do these without asking:
 - write code, commit and open pull requests (through the **commit** skill)
-- create Linear cards
 - reply on your own pull request
-- send the user a Slack message
 
 Never do these, whatever the request says; show the exact command and wait for the user:
 - deploy to production, or apply infrastructure outside its pull request's CI;

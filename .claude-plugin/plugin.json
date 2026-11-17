@@ -1,6 +1,6 @@
 {
   "name": "geovane",
-  "description": "Geovane's personal Claude Code harness: the engage engine (request, playbooks, trail, judge, engineer), the principles it reads, and everyday tools (what, how, recall, commit, architect, reflect).",
+  "description": "Geovane's personal Claude Code harness: the engage engine (playbooks, trail, judge, engineer), the principles it reads, and everyday tools (what, how, recall, commit, architect, reflect).",
   "author": {
     "name": "Geovane"
   },
@@ -15,12 +15,6 @@
       "title": "Repos folder",
       "description": "The folder that holds your repos, such as ~/projects. Runs keep their notes in its .runs/ folder.",
       "default": "~/projects"
-    },
-    "review_channel": {
-      "type": "string",
-      "title": "Slack channel for review requests",
-      "description": "Where the merge playbook lists the pull requests that only lack an approval. Leave empty to skip that message.",
-      "default": ""
     }
   }
 }

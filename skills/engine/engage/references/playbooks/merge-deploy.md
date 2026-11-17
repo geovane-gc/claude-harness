@@ -14,9 +14,8 @@ The scripts are in `../../scripts/` and `../../../../tools/commit/scripts/`.
 3. In that order: `APPROVED` → `merge.sh <pr url>`, then `watch-pr.sh <pr url>` until `MERGED` or
    `RELEASE_FAILED`. `COMMENTS`, `CONFLICT` or `CI_FAILED` → the **PR babysit** playbook for that
    pull request.
-4. Pull requests that only lack an approval, with every check their base requires green: when
-   `${user_config.review_channel}` is set, one message in that Slack channel listing them in merge
-   order; otherwise list them in the reply.
+4. Pull requests that only lack an approval, with every check their base requires green: list them
+   in the reply, in merge order.
 5. Deploy what the request names, a service after the ones it calls, the way the repo deploys (its
    `CLAUDE.md`, README or deploy workflow). Never deploy to production: show the exact command.
 6. Confirm the version running in each environment you deployed to, by reading it, never writing.

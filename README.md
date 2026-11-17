@@ -1,7 +1,7 @@
 # geovane
 
 Minha harness pessoal do Claude Code, empacotada como plugin. O centro é o `/geovane:engage`, que leva
-uma mudança de um card do Linear (ou de um pedido em texto) até um pull request aprovado, seguindo um
+uma mudança de um pedido em texto até um pull request aprovado, seguindo um
 playbook por tipo de trabalho.
 
 ## Instalação
@@ -17,28 +17,27 @@ No diálogo de enable, ou depois em `/config` no plugin geovane, defina:
 | Opção | Para quê | Padrão |
 |---|---|---|
 | Repos folder (`workspace`) | A pasta com os seus repos. As runs guardam as notas em `<workspace>/.runs/`. | `~/projects` |
-| Slack channel for review requests (`review_channel`) | Onde o playbook de merge lista os PRs que só esperam aprovação. Vazio: a lista vai na resposta. | vazio |
 
 O `/geovane:setup` confere o que falta nesta máquina e pode rodar quantas vezes quiser. Ele verifica
-os conectores (Linear, Slack), a chave do Linear no Keychain, a pasta dos repos e o CLI (`git`, `gh`,
+a pasta dos repos e o CLI (`git`, `gh`,
 `jq`, `python3`, `docker`).
 
 ## Como usar cada coisa
 
 ### Engine
 
-**`/geovane:engage <card ou pedido>`** é o comando do dia a dia. Exemplos:
+**`/geovane:engage <pedido>`** é o comando do dia a dia. Exemplos:
 
 ```
-/geovane:engage ENG-512
+/geovane:engage o export de CSV quebra com acentos, corrige
 /geovane:engage o PR https://github.com/<owner>/<repo>/pull/750 tá com comentários, resolve
 /geovane:engage revisa o PR 760 antes de eu pedir aprovação
 /geovane:engage mergeia meus PRs aprovados
 /geovane:engage como implementar rate limiting nessa API? quais os padrões de mercado e as opções
 ```
 
-Ele escolhe o playbook, cria uma task por passo e roda. Com um card do Linear, o
-`start-task.sh` grava o card em `<workspace>/.runs/ENG-512/task.md` e move o card para In Progress.
+Ele escolhe o playbook, cria uma task por passo e roda. O pedido fica
+em `<workspace>/.runs/<assunto>/task.md`.
 No fim, a resposta traz o que mudou e para quem, a prova, as decisões, os princípios usados e o custo
 da run.
 
@@ -56,12 +55,8 @@ da run.
 Antes de um playbook de código, o engine lê as regras do próprio repo (`CLAUDE.md`, `REVIEW.md`,
 `.claude/rules/`) e decide se outro repo (infra, deploy, lib compartilhada) precisa mudar junto.
 
-**`/geovane:request <pedido>`** transforma um pedido em card do Linear com sub-issues. Ele lê
-tudo que já responde antes de perguntar, pergunta em rodadas (você responde só os números de que
-discorda), passa o card pelo `judge` e publica.
-
 **`trail`** e **`spec`** são usados pelo engine: o `trail` grava decisões e fatos em
-`.runs/<card>/trail.md`, e o `spec` escreve no `docs/` do repo o que o código não diz.
+`.runs/<assunto>/trail.md`, e o `spec` escreve no `docs/` do repo o que o código não diz.
 
 ### Ferramentas
 
@@ -72,7 +67,7 @@ discorda), passa o card pelo `judge` e publica.
 | `/geovane:commit` | Commita, faz push e abre o PR. Escolhe o branch, um PR por coisa. |
 | `/geovane:what` | Reescreve a última resposta em palavras simples. |
 | `/geovane:catchup` | Onde o trabalho está, o que mudou e qual decisão espera você. |
-| `/geovane:recall <tema>` | Reconstrói um tema a partir das conversas e memórias passadas e confere PRs e cards hoje. |
+| `/geovane:recall <tema>` | Reconstrói um tema a partir das conversas e memórias passadas e confere os PRs hoje. |
 | `/geovane:reflect` | Revisa a run: o que deu certo, o que foi contornado. |
 
 ### Agentes

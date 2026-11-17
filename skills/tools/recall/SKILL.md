@@ -15,8 +15,8 @@ names a window; with no topic, ask for one.
    this one and `*private-tmp*`; read the memories that mention it.
 2. Read the matching parts with agents, a few conversations each.
    Each returns, per file: the goal, the decisions, what stayed
-   open, the user's corrections, and the PRs, branches, tickets.
-3. Check each PR, branch and ticket now with `gh`, `git`, Linear.
+   open, the user's corrections, and the PRs and branches.
+3. Check each PR and branch now with `gh` and `git`.
 4. Reply: up to 5 lines of summary; one line per thread tagged
    `[done]`, `[open PR #N]`, `[in progress <branch>]`, `[reverted]`
    or `[not started]`; the problems that came back; the next step.

@@ -10,7 +10,7 @@
     {
       "name": "geovane",
       "source": "./",
-      "description": "Geovane's personal Claude Code harness: the engage engine (request, playbooks, trail, judge, engineer), the principles it reads, and everyday tools (what, how, recall, commit, architect, reflect)."
+      "description": "Geovane's personal Claude Code harness: the engage engine (playbooks, trail, judge, engineer), the principles it reads, and everyday tools (what, how, recall, commit, architect, reflect)."
     }
   ]
 }

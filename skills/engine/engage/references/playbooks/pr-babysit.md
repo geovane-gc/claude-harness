@@ -43,17 +43,17 @@ The scripts are in `../../scripts/`.
 
    Name in your reply each item the engineer left for a decision, with what it found.
 6. `APPROVED`: when the user said to merge, run `../../../../tools/commit/scripts/merge.sh <pr url>`:
-   it merges, or says what stops it. Send the user a Slack direct message (to their own user id, which the Slack send tool names) with
+   it merges, or says what stops it. Tell the user, in the reply,
    the link, who approved it, the checks count, each open thread (its link, who opened it, its first
    line), each warning (its check, its conclusion or annotations, its link), and merge.sh's answer.
    A warning with an annotation on a file in `changed_files`: step 5 for it, without waiting for the
    engineer.
    Stop. Only this verdict says the pull request is approved.
-7. `FIX_CLOSED`: send the user a Slack direct message with both links: the fix was closed without
+7. `FIX_CLOSED`: tell the user, in the reply, both links: the fix was closed without
    being merged, and this pull request still fails. Stop.
-8. `FIX_FAILED` or `RELEASE_FAILED`: send the user a Slack direct message with the pull request's
+8. `FIX_FAILED` or `RELEASE_FAILED`: tell the user, in the reply, the pull request's
    link and each failed run's link. Stop.
 9. `MERGED` or `CLOSED`: stop.
 
-**Reply:** the link and its final verdict, what each round fixed and disputed, and the Slack
-messages.
+**Reply:** the link and its final verdict, what each round fixed and disputed, and what steps 6 to 8
+told the user.

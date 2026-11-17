@@ -62,7 +62,7 @@ The sketch changes behavior the task did not ask for, often sold as "this also c
 that reads the sketch takes the extra change as part of the plan and asks the user to settle it, so the task grows
 one question at a time.
 
-Take it out of the shape, and report it as a problem outside the task: its own change or a Linear card,
+Take it out of the shape, and report it as a problem outside the task: its own change or a line in the reply,
 never a question to settle inside this task. When the task names what it owns, everything else is out of scope.
 
 Judge scope against the task as the user stated it, never against the constraints the rationale restates in its

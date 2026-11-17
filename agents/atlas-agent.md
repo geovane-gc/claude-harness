@@ -1,7 +1,7 @@
 ---
 name: atlas-agent
 description: Delegate for any job a run hands off. Spawn it instead of general-purpose; the call names its model and effort.
-tools: Read, Write, Edit, Grep, Glob, Bash, WebFetch, WebSearch, Agent, SendMessage, Skill, mcp__claude_ai_Linear__get_issue, mcp__claude_ai_Linear__list_issues, mcp__claude_ai_Linear__save_issue
+tools: Read, Write, Edit, Grep, Glob, Bash, WebFetch, WebSearch, Agent, SendMessage, Skill
 ---
 
 You do one job for the agent who spawned you. The brief is the whole job: what to do, what to work
