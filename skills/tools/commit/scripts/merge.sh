@@ -5,8 +5,17 @@
 # folds (squash-merges) each pull request stacked on it into its base, from the top down, and only
 # when every one has an approval. A default branch that dismisses approvals when a base changes then
 # asks for one new approval, on the bottom one, instead of a new one per pull request.
+# --without-approval skips both approval checks, for when the user said to merge without one: the
+# author of a pull request cannot approve it, so one opened from the user's account has no approver
+# but a teammate. The base branch's own rules still apply: GitHub holds the merge if they ask for one.
 set -euo pipefail
-pr="${1:?usage: merge.sh <pull request URL>}"
+pr="${1:?usage: merge.sh <pull request URL> [--without-approval]}"
+without_approval=false
+case "${2:-}" in
+  "") ;;
+  --without-approval) without_approval=true ;;
+  *) echo "not merged: unknown option \"$2\"; the only one is --without-approval" >&2; exit 1 ;;
+esac
 case "$pr" in
   https://github.com/*/pull/*) ;;
   *) echo "not merged: give the pull request's URL, not \"$pr\": a number alone means a different pull request in each repo the shell may be in" >&2; exit 1 ;;
@@ -30,6 +39,7 @@ if [ "$base" = "$default" ]; then
   stack=$(stacked_on "$(gh pr view "$url" --json headRefName -q .headRefName)")
   if [ -n "$stack" ]; then
     for child in $stack; do
+      $without_approval && break
       approvals=$(gh pr view "$child" --json reviews -q '[.reviews[] | select(.state == "APPROVED")] | length')
       if [ "$approvals" -eq 0 ]; then
         echo "not merged: $child, stacked on $url, has no approval; nothing was folded"
@@ -45,7 +55,7 @@ if [ "$base" = "$default" ]; then
   fi
 fi
 
-if [ "$decision" != "APPROVED" ]; then
+if [ "$decision" != "APPROVED" ] && ! $without_approval; then
   echo "not merged: $url is ${decision:-not reviewed}; it needs an approval first"
   exit 1
 fi
@@ -76,7 +86,7 @@ if [ "$state" = "DIRTY" ]; then
 fi
 if [ "$state" = "BEHIND" ]; then
   gh pr update-branch "$url"
-  echo "brought $default into $url (the approval stays)"
+  echo "brought $default into $url"
 fi
 gh pr merge "$url" --squash --auto
 echo "auto-merge on: $url merges when its required checks pass"

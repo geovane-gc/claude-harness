@@ -11,11 +11,12 @@ The scripts are in `../../scripts/` and `../../../../tools/commit/scripts/`.
    people about a change after the one that ships it. A stack counts as one, its bottom pull
    request, the one on the default branch: `merge.sh` on it folds the others into it first. Trail
    the order as a `decision`.
-3. In that order: `APPROVED` → `merge.sh <pr url>`, then `watch-pr.sh <pr url>` until `MERGED` or
-   `RELEASE_FAILED`. `COMMENTS`, `CONFLICT` or `CI_FAILED` → the **PR babysit** playbook for that
+3. In that order: `APPROVED` → `merge.sh <pr url>`; lacking only an approval, when the user said to
+   merge without one → `merge.sh <pr url> --without-approval`. Then `watch-pr.sh <pr url>` until
+   `MERGED` or `RELEASE_FAILED`. `COMMENTS`, `CONFLICT` or `CI_FAILED` → the **PR babysit** playbook for that
    pull request.
-4. Pull requests that only lack an approval, with every check their base requires green: list them
-   in the reply, in merge order.
+4. Pull requests that only lack an approval, with every check their base requires green and no word
+   from the user to merge without one: list them in the reply, in merge order.
 5. Deploy what the request names, a service after the ones it calls, the way the repo deploys (its
    `CLAUDE.md`, README or deploy workflow). Never deploy to production: show the exact command.
 6. Confirm the version running in each environment you deployed to, by reading it, never writing.
