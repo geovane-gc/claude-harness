@@ -25,7 +25,7 @@ url=$(gh pr view "$pr" --json url -q .url)
 repo=$(printf '%s' "$url" | sed -E 's#https://github.com/([^/]+/[^/]+)/pull/.*#\1#')
 default=$(gh repo view "$repo" --json defaultBranchRef -q .defaultBranchRef.name)
 read -r decision state base <<< "$(gh pr view "$url" --json reviewDecision,mergeStateStatus,baseRefName \
-  -q '"\(.reviewDecision) \(.mergeStateStatus) \(.baseRefName)"')"
+  -q '"\(.reviewDecision // "" | if . == "" then "NONE" else . end) \(.mergeStateStatus) \(.baseRefName)"')"
 
 # Prints the open pull requests stacked on a branch, the topmost first.
 stacked_on() {
@@ -51,12 +51,12 @@ if [ "$base" = "$default" ]; then
       echo "folded $child into its base"
     done
     read -r decision state <<< "$(gh pr view "$url" --json reviewDecision,mergeStateStatus \
-      -q '"\(.reviewDecision) \(.mergeStateStatus)"')"
+      -q '"\(.reviewDecision // "" | if . == "" then "NONE" else . end) \(.mergeStateStatus)"')"
   fi
 fi
 
 if [ "$decision" != "APPROVED" ] && ! $without_approval; then
-  echo "not merged: $url is ${decision:-not reviewed}; it needs an approval first"
+  echo "not merged: $url is ${decision/#NONE/not reviewed}; it needs an approval first"
   exit 1
 fi
 # A dependency is merged first; a deploy it needs is a person's to confirm.
