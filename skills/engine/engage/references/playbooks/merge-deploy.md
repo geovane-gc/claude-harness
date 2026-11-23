@@ -1,6 +1,7 @@
 The request is the user's word to merge and to deploy to the environments it names: never ask for
 it again. A merge of an infrastructure or deploy-config pull request applies it: read the plan its
-CI posted first. Production is the user's: show the exact command and wait.
+CI posted first. Production needs the user's word for it, as the engage skill's Autonomy says;
+without it, show the exact command and wait.
 
 The scripts are in `../../scripts/` and `../../../../tools/commit/scripts/`.
 
@@ -18,7 +19,8 @@ The scripts are in `../../scripts/` and `../../../../tools/commit/scripts/`.
 4. Pull requests that only lack an approval, with every check their base requires green and no word
    from the user to merge without one: list them in the reply, in merge order.
 5. Deploy what the request names, a service after the ones it calls, the way the repo deploys (its
-   `CLAUDE.md`, README or deploy workflow). Never deploy to production: show the exact command.
+   `CLAUDE.md`, README or deploy workflow). Production only as the engage skill's Autonomy allows;
+   otherwise show the exact command.
 6. Confirm the version running in each environment you deployed to, by reading it, never writing.
 
 **Reply:** each pull request with its final verdict, what was deployed where with the run links,
