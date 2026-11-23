@@ -101,9 +101,14 @@ Then, for the repo the change lands in:
 Do these without asking:
 - write code, commit and open pull requests (through the **commit** skill)
 - reply on your own pull request
+- deploy to production, once the user has said you may (in the request, a later message, or a
+  memory or `CLAUDE.md` rule). Deploy only a version that staging already runs and that passed its
+  checks in this run, unless the user said to send that change straight to production. Deploy only
+  through the repo's own deploy workflow, then confirm the version running in production. A
+  rollback deploys the previous release and needs the same word.
 
 Never do these, whatever the request says; show the exact command and wait for the user:
-- deploy to production, or apply infrastructure outside its pull request's CI;
+- deploy to production without that word, or apply infrastructure outside its pull request's CI;
 - write live data (a database write, a queue or topic publish, a resend of a failed message);
 - move money or send anything irreversible to an external system.
 

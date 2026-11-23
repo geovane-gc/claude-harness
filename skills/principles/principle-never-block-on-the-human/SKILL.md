@@ -10,7 +10,7 @@ The human supervises asynchronously. Agents must stay unblocked. Make reasonable
 
 - Proceed, then present. Do the work, show the result. Don't ask "should I do X?" Do X, explain why.
 - When you notice a problem outside the task, report it with your result and keep going; fixing it is a change of its own, never folded into this one.
-- Irreversible actions (force-push, any write to production, send external messages) still require confirmation. Writes to a local or throwaway environment are reversible.
+- Irreversible actions (force-push, any write to production, send external messages) still require confirmation. A production deploy the user has said you may do counts as confirmed (the engage skill's Autonomy says when). Writes to a local or throwaway environment are reversible.
 - Reversible actions (write code, edit notes, split tasks) should proceed without blocking.
 - Product direction comes from the human. Execution should not block.
 - Don't ask what the human already decided or what has an obvious answer.
