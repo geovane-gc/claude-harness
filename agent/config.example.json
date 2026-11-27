@@ -1,0 +1,84 @@
+{
+  "owner_slack_id": "{{OWNER_SLACK_ID}}",
+  "owner_github": "{{OWNER_GITHUB}}",
+  "user_groups": {
+    "{{USER_GROUP_NAME}}": "{{USER_GROUP_ID}}"
+  },
+  "watched_channels": {
+    "pr-announcements": "{{WATCHED_CHANNEL_ID}}"
+  },
+  "ci_bot_id": "{{CI_BOT_ID}}",
+  "claude_app_user_id": "{{CLAUDE_APP_USER_ID}}",
+  "prefix": "{{AGENT_EMOJI}} {{AGENT_NAME}}:",
+  "agent_name": "{{AGENT_NAME}}",
+  "owner_names": [
+    "{{OWNER_FIRST_NAME}}",
+    "{{OWNER_LAST_NAME}}"
+  ],
+  "prefix_aliases": [],
+  "control_channel_id": "{{CONTROL_CHANNEL_ID}}",
+  "slack_workspace_host": "{{SLACK_WORKSPACE_HOST}}",
+  "github_orgs": [
+    "{{GITHUB_ORG}}"
+  ],
+  "allowed_link_hosts": [
+    "datadoghq.com"
+  ],
+  "scan_model": "haiku",
+  "review_model": "opus",
+  "review_effort": "high",
+  "talk_model": "sonnet",
+  "max_parallel_reviews": 2,
+  "max_parallel_talks": 2,
+  "talk_timeout_minutes": 15,
+  "review_timeout_minutes": 40,
+  "pr_minder_merge": false,
+  "summary_hour": 19,
+  "datadog_hour": 8,
+  "datadog_watch": true,
+  "datadog_days_of_commits": 30,
+  "datadog_min_commits": 3,
+  "datadog_max_services": 8,
+  "datadog_envs": [
+    "prod"
+  ],
+  "datadog_service_names": [
+    "{repo}"
+  ],
+  "datadog_skip_repos": [],
+  "lookback_minutes": 15,
+  "workspace": "~/{{HOME_DIR_NAME}}/repos",
+  "claude": "/opt/homebrew/bin/claude",
+  "gh": "/opt/homebrew/bin/gh",
+  "other_connectors": [
+    "Claude_Data",
+    "Claude_Docs",
+    "Meetings",
+    "Google_Slides",
+    "Google_Sheets",
+    "Google_Docs",
+    "Datadog",
+    "Google_Drive",
+    "Gmail",
+    "Google_Calendar"
+  ],
+  "panel_canvas_id": "",
+  "no_fix_repos": [],
+  "no_merge_repos": [],
+  "light_review_repos": [],
+  "build_timeout_minutes": 120,
+  "organization_name": "{{ORGANIZATION_NAME}}",
+  "enabled": true,
+  "workdays": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "max_parallel_builds": 1,
+  "audit_timeout_minutes": 60,
+  "draft_only": false,
+  "harness_repo": "geovane-gc/claude-harness",
+  "harness_path": "agent"
+}

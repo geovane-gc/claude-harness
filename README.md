@@ -79,6 +79,20 @@ Antes de um playbook de código, o engine lê as regras do próprio repo (`CLAUD
 | `geovane:cleaner` | Revisa texto de harness (skill, agente, doc) cortando ruído para quem lê. |
 | `geovane:atlas-agent` | Delegado genérico. Quem chama precisa dizer o modelo (sonnet/opus) e o effort. |
 
+## Hermes, o agente do Slack
+
+O Hermes 🪽 trabalha no Slack em seu nome: faz a triagem do que chega a você, responde o que confirmou na fonte e te
+pergunta o resto num canal privado, cuida dos seus PRs, revisa os PRs em que pedem a sua review, e manda a revisão do
+dia e os achados do Datadog. Ele roda numa pasta própria, fora do plugin, com o `launchd`. Workspace do Slack,
+organizações do GitHub, canais e serviços vêm do config da instalação.
+
+```
+bash agent/install.sh
+```
+
+A pasta [`agent/`](agent/README.md) explica o que ele faz, como instalar e como atualizar. Para mudar o agente numa
+sessão, use a skill `geovane:agent-evolve`.
+
 ## Hooks
 
 Cada hook age só dentro dos agentes do plugin (`geovane:*`), menos o `commit-opened-watch`, que age

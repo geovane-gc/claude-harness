@@ -1,0 +1,123 @@
+#!/usr/bin/env python3
+import fcntl
+import os
+import re
+import sys
+from datetime import date
+
+FILE = os.path.expanduser("~/{{HOME_DIR_NAME}}/pepper/backlog.md")
+JOURNAL = os.path.expanduser("~/{{HOME_DIR_NAME}}/pepper/state/backlog.journal.md")
+NEXT_ID = os.path.expanduser("~/{{HOME_DIR_NAME}}/pepper/state/backlog.next_id")
+THIRD_PARTY_RUNS = {"prfix", "bot", "review", "prthreads", "attachment", "calls"}
+KINDS = ("routine", "connector", "develop", "debug", "tracking", "improve", "other")
+USAGE = f"""usage: backlog <command>
+  add <{'|'.join(KINDS)}> "<title>" "<what {{OWNER_FIRST_NAME}} asked, his words>" [source permalink]
+  list [open|approved|building|done|all]
+  approve <id> "<{{OWNER_FIRST_NAME}}'s words agreeing>"   (a build run picks it up and carries it out)
+  building <id> "<run label>"
+  session <id> "<why it needs {{OWNER_FIRST_NAME}} live>"   (never goes to a build run; waits in the panel for a session)
+  reopen <id> "<why it went back to open>"
+  done <id> "<how it was done / link>"
+  drop <id> "<why>\""""
+HEADER = "# {{AGENT_NAME}} backlog ({{OWNER_FIRST_NAME}}'s asks from #{{CONTROL_CHANNEL_NAME}} and Claude sessions; implemented in sessions via geovane:agent-evolve)\n"
+
+
+def read():
+    if not os.path.exists(FILE):
+        return []
+    items = []
+    for line in open(FILE):
+        m = re.match(r"^- \[( |x|-|>|~|s)\] #(\d+) \((\w+)\) (.+?) — (.+?) \| asked (\S+)(?: \| src (\S+))?(?: \| (.+))?$", line.rstrip("\n"))
+        if m:
+            items.append({"state": m.group(1), "id": int(m.group(2)), "kind": m.group(3), "title": m.group(4),
+                          "ask": m.group(5), "asked": m.group(6), "src": m.group(7) or "", "note": m.group(8) or ""})
+    return items
+
+
+def write(items):
+    lines = [HEADER]
+    for i in items:
+        line = f"- [{i['state']}] #{i['id']} ({i['kind']}) {i['title']} — {i['ask']} | asked {i['asked']}"
+        if i["src"]:
+            line += f" | src {i['src']}"
+        if i["note"]:
+            line += f" | {i['note']}"
+        lines.append(line)
+    with open(FILE + ".tmp", "w") as handle:
+        handle.write("\n".join(lines) + "\n")
+    os.replace(FILE + ".tmp", FILE)
+    os.makedirs(os.path.dirname(JOURNAL), exist_ok=True)
+    with open(JOURNAL + ".tmp", "w") as handle:
+        handle.write("\n".join(lines) + "\n")
+    os.replace(JOURNAL + ".tmp", JOURNAL)
+
+
+def next_id(items):
+    try:
+        stored = int(open(NEXT_ID).read().strip())
+    except (OSError, ValueError):
+        stored = 0
+    value = max([stored] + [i["id"] + 1 for i in items] + [1])
+    with open(NEXT_ID, "w") as handle:
+        handle.write(str(value + 1))
+    return value
+
+
+def main():
+    if len(sys.argv) < 2:
+        sys.exit(USAGE)
+    items, command = read(), sys.argv[1]
+    if command != "list" and (os.environ.get("PEPPER_RUN_KIND") in THIRD_PARTY_RUNS or os.environ.get("PEPPER_FIX_RUN") == "1"):
+        sys.exit(f"backlog: a {os.environ.get('PEPPER_RUN_KIND', 'fix')} run started by someone else's text never writes the backlog; "
+                 "say what you found in your answer and {{OWNER_FIRST_NAME}} decides")
+    if command == "add" and len(sys.argv) >= 5 and sys.argv[2] in KINDS:
+        new = {"state": " ", "id": next_id(items), "kind": sys.argv[2],
+               "title": sys.argv[3].replace("|", "/"), "ask": sys.argv[4].replace("|", "/").replace("\n", " "),
+               "asked": str(date.today()), "src": sys.argv[5] if len(sys.argv) > 5 else "", "note": ""}
+        write(items + [new])
+        print(f"backlog #{new['id']} added: {new['title']}")
+    elif command == "list":
+        which = sys.argv[2] if len(sys.argv) > 2 else "open"
+        for i in items:
+            if which == "all" or (which == "open" and i["state"] in " >~s") or (which == "done" and i["state"] in "x-") \
+                    or (which == "approved" and i["state"] == ">") or (which == "building" and i["state"] == "~") \
+                    or (which == "session" and i["state"] == "s"):
+                source = f" src {i['src']}" if i["src"] else ""
+                print(f"#{i['id']} [{i['state']}] ({i['kind']}) {i['title']} — {i['ask']} (asked {i['asked']}) {i['note']}{source}")
+    elif command == "reopen" and len(sys.argv) == 4:
+        for i in items:
+            if i["id"] == int(sys.argv[2]):
+                i["state"], i["note"] = " ", f"reopened {date.today()}: {sys.argv[3]}"
+        write(items)
+        print(f"backlog #{sys.argv[2]} reopened")
+    elif command == "session" and len(sys.argv) == 4:
+        for i in items:
+            if i["id"] == int(sys.argv[2]) and i["state"] not in "x-":
+                i["state"], i["note"] = "s", f"needs a session {date.today()}: {sys.argv[3]}"
+        write(items)
+        print(f"backlog #{sys.argv[2]} waits for a session with {{OWNER_FIRST_NAME}}")
+    elif command in ("approve", "building") and len(sys.argv) == 4:
+        found = False
+        for i in items:
+            if i["id"] == int(sys.argv[2]) and i["state"] in " >~s":
+                i["state"] = ">" if command == "approve" else "~"
+                i["note"] = f"{'approved' if command == 'approve' else 'building'} {date.today()}: {sys.argv[3]}"
+                found = True
+        if not found:
+            sys.exit(f"backlog #{sys.argv[2]}: not open")
+        write(items)
+        print(f"backlog #{sys.argv[2]} {'approved' if command == 'approve' else 'building'}")
+    elif command in ("done", "drop") and len(sys.argv) == 4:
+        for i in items:
+            if i["id"] == int(sys.argv[2]):
+                i["state"], i["note"] = ("x" if command == "done" else "-"), f"{command} {date.today()}: {sys.argv[3]}"
+        write(items)
+        print(f"backlog #{sys.argv[2]} {command}")
+    else:
+        sys.exit(USAGE)
+
+
+if __name__ == "__main__":
+    with open(os.path.expanduser("~/{{HOME_DIR_NAME}}/pepper/state/backlog.lock"), "w") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        main()

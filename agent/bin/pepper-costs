@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+import glob
+import json
+import os
+import sys
+from collections import defaultdict
+from datetime import date, timedelta
+
+EVENTS = os.path.expanduser("~/{{HOME_DIR_NAME}}/pepper/state/events")
+USAGE = "usage: pepper-costs [days=1]   cost of {{AGENT_NAME}}'s runs: API-equivalent vs billed overage, plan utilization"
+
+
+def plan_balance(latest):
+    if not latest:
+        return "  plan balance: no reading in this period (the plan exposes only % used, never tokens or dollars)"
+    parts = []
+    for label, window in (("5h", "five_hour"), ("7d", "seven_day")):
+        used = latest.get(window)
+        if used is not None:
+            parts.append(f"{label} {max(0.0, 1 - used):.0%} left ({used:.0%} used)")
+    return f"  plan balance (last reading {latest['at']}): {', '.join(parts)}; plan exposes only % used, not tokens or dollars"
+
+
+def main():
+    days = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].isdigit() else 1
+    since = date.today() - timedelta(days=days - 1)
+    by_kind, overage, peaks = defaultdict(lambda: [0, 0.0]), [0, 0.0], {"five_hour": 0.0, "seven_day": 0.0}
+    allowed = set()
+    latest = {}
+    for path in sorted(glob.glob(os.path.join(EVENTS, "*.jsonl"))):
+        if os.path.basename(path)[:10] < since.isoformat():
+            continue
+        for line in open(path):
+            event = json.loads(line)
+            cost = event.get("cost")
+            if cost is None:
+                continue
+            key = f"review/{event.get('model', 'opus')}" if event["kind"] == "review" else f"{event['kind']}/{event.get('type', '')}"
+            by_kind[key][0] += 1
+            by_kind[key][1] += cost
+            rate = event.get("rate") or {}
+            if rate.get("overage"):
+                overage[0] += 1
+                overage[1] += cost
+            if rate.get("overage_allowed"):
+                allowed.add(rate["overage_allowed"])
+            if rate.get("five_hour") is not None or rate.get("seven_day") is not None:
+                latest = {"at": f"{os.path.basename(path)[:10]} {event.get('at', '')}", **rate}
+            for window in peaks:
+                peaks[window] = max(peaks[window], rate.get(window) or 0)
+    total = sum(v[1] for v in by_kind.values())
+    print(f"{{AGENT_NAME}} costs {since} -> {date.today()} ({days} day{'s' if days > 1 else ''})")
+    print(f"  API-equivalent total: ${total:.2f} (runs on {{OWNER_FIRST_NAME}}'s Team plan; NOT billed unless overage)")
+    print(f"  billed as overage:    ${overage[1]:.2f} in {overage[0]} run(s); overage setting: {', '.join(sorted(allowed)) or 'unknown'}")
+    print(f"  plan peak utilization seen by {{AGENT_NAME}}'s runs: 5h {peaks['five_hour']:.0%}, 7d {peaks['seven_day']:.0%}")
+    print(plan_balance(latest))
+    for key, (count, cost) in sorted(by_kind.items(), key=lambda item: -item[1][1]):
+        print(f"  {key:22} {count:3} run(s)  ${cost:6.2f}  avg ${cost / count:.2f}")
+    print("  note: scans/fetch/send runs (haiku) are not in events yet; ~$0.003-0.014 per pass")
+
+
+if __name__ == "__main__":
+    main()

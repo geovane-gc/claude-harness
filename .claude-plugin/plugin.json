@@ -1,13 +1,14 @@
 {
   "name": "geovane",
-  "description": "Geovane's personal Claude Code harness: the engage engine (playbooks, trail, judge, engineer), the principles it reads, and everyday tools (what, how, recall, commit, architect, reflect).",
+  "description": "Geovane's personal Claude Code harness: the engage engine (playbooks, trail, judge, engineer), the principles it reads, everyday tools (what, how, recall, commit, architect, reflect), and Hermes, a Slack agent that works on Slack for its owner (agent/ folder and the agent-evolve skill).",
   "author": {
     "name": "Geovane"
   },
   "skills": [
     "./skills/engine/",
     "./skills/principles/",
-    "./skills/tools/"
+    "./skills/tools/",
+    "./skills/agent/"
   ],
   "userConfig": {
     "workspace": {
