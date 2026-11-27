@@ -22,7 +22,8 @@
     "{{GITHUB_ORG}}"
   ],
   "allowed_link_hosts": [
-    "datadoghq.com"
+    "datadoghq.com",
+    "linear.app"
   ],
   "scan_model": "haiku",
   "review_model": "opus",
@@ -46,6 +47,8 @@
     "{repo}"
   ],
   "datadog_skip_repos": [],
+  "linear": true,
+  "linear_team": "",
   "lookback_minutes": 15,
   "workspace": "~/{{HOME_DIR_NAME}}/repos",
   "claude": "/opt/homebrew/bin/claude",

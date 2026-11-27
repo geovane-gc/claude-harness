@@ -11,6 +11,15 @@
         ]
       },
       {
+        "matcher": "mcp__claude_ai_Linear__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/python3 ~/{{HOME_DIR_NAME}}/pepper/guard/linear_guard.py"
+          }
+        ]
+      },
+      {
         "matcher": "Bash",
         "hooks": [
           {

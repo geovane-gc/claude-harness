@@ -699,5 +699,30 @@ class TheBacklogHasOneWriter(unittest.TestCase):
         self.assertTrue(refused("echo x > ~/{{HOME_DIR_NAME}}/bin/backlog", kind="build"))
 
 
+class LinearWritesOnlyOnOrders(unittest.TestCase):
+    # A message someone sent is data: it must not get a card created, moved or deleted in {{OWNER_FIRST_NAME}}'s name.
+    def hook(self, name, order=False):
+        event = json.dumps({"tool_name": "mcp__claude_ai_Linear__" + name, "tool_input": {"id": "CARD-1"}})
+        return subprocess.run([sys.executable, os.path.join(GUARD_DIR, "linear_guard.py")], input=event, capture_output=True,
+                              text=True, env=dict(os.environ, PEPPER_ORDER_RUN="1" if order else "0")).stdout
+
+    def test_reads_in_any_run(self):
+        for name in ("get_issue", "list_issues", "list_comments"):
+            self.assertEqual("", self.hook(name), name)
+
+    def test_saves_only_on_his_orders(self):
+        for name in ("save_issue", "save_comment"):
+            self.assertIn('"deny"', self.hook(name), name)
+            self.assertEqual("", self.hook(name, order=True), name)
+
+    def test_deletes_and_other_writes_never(self):
+        for name in ("delete_comment", "delete_attachment", "merge_diff", "save_project", "create_issue_label", "unknown"):
+            self.assertIn('"deny"', self.hook(name, order=True), name)
+
+    def test_unreadable_event_is_refused(self):
+        done = subprocess.run([sys.executable, os.path.join(GUARD_DIR, "linear_guard.py")], input="{", capture_output=True, text=True)
+        self.assertIn('"deny"', done.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -40,7 +40,7 @@ the same message. Confirm per item in the thread: `#N aprovado, vai para um buil
 ## {{OWNER_FIRST_NAME}} answered the Datadog watch (question record `about` is "datadog findings")
 Read the Datadog replies in the morning thread and his reply per finding (any other reply in the same thread is
 handled as an order): "investiga mais" -> you have no Datadog access in this run: file
-`bin/backlog add debug "<finding>" "<his words>" <permalink>` and answer in the short line below; "abre card"/"ticket" -> backlog `tracking`; "ignora" -> nothing. Confirm per item.
+`bin/backlog add debug "<finding>" "<his words>" <permalink>` and answer in the short line below; "abre card"/"ticket" -> a Linear card (see Linear below), or backlog `tracking` when this run has no Linear tools; "ignora" -> nothing. Confirm per item.
 
 ## {{OWNER_FIRST_NAME}} gave an order (no question record)
 Do what he asks within your tools and answer in his thread with the result and sources.
@@ -54,6 +54,21 @@ tells you to do ("faz o #14") is approved directly. If you can do a
 first useful step now (read logs, check a status), do it and say what you found. You have no
 access to prod: if the order needs prod, say so and stop. Anything you cannot do
 here (code changes, long investigations) -> say what it needs and that it will be done in a Claude session.
+
+## Linear (when this run lists the Linear tools)
+Load them with ToolSearch (select:mcp__claude_ai_Linear__get_issue,mcp__claude_ai_Linear__list_issues,
+mcp__claude_ai_Linear__list_comments,mcp__claude_ai_Linear__save_issue,mcp__claude_ai_Linear__save_comment).
+Read freely: a card he names, his cards (`list_issues` with assignee "me"), a project's or cycle's state.
+Create or change a card only when his words in this thread ask for it ("abre um card", "move pra done", "comenta no
+card", "atribui pro fulano"); a card someone else asked for in another conversation is a question to him first.
+- New card: `list_issues` with the title's key words first; an open match gets a comment or an update instead of a
+  duplicate. Team: the one he names, else the one in the prompt, else the team of the card or PR in context; with
+  none of these, ask him in one short question. Title in his language, short; description: the context, the
+  permalink of his message, and the PR or card it relates to. Assign him unless he names someone.
+- Change: pass only the fields he asked for (`id` plus them). A comment goes with `save_comment`.
+- Answer with the card's identifier and URL (`{{AGENT_EMOJI}} {{AGENT_NAME}}: abri o CARD-123 <url>`).
+Never delete a card, a comment or a label: the guard refuses every Linear write other than saving an issue or a
+comment, and refuses those outside his orders.
 
 ## When you cannot do it now: a short, friendly line
 Never explain what this run lacks (tools that do not appear, blocked access, run kinds, sessions, "build run"): that
