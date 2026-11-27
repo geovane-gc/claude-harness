@@ -10,7 +10,7 @@ in a few words.
 2. Learn what exists here: run the **how** skill over the part the work would touch, and search
    GitHub (`gh search code --owner <the repo's owner>`) for a repo of yours that already solves it. When
    nothing here touches it, skip the how and trail what the search covered.
-3. Spawn one `geovane:atlas-agent` on sonnet at medium effort per line of research the question
+3. Spawn one `geovane:delegate` on sonnet at medium effort per line of research the question
    needs, in parallel, such as:
    - the standards and specs: an RFC, a standard, a provider's docs;
    - how known implementations do it: open-source projects and companies in the market;
@@ -18,7 +18,7 @@ in a few words.
 
    Give each `question.md` and its line. Each writes `<run folder>/research-<line>.md`, every claim
    beside the URL it comes from, and marks what it inferred.
-4. Spawn one `geovane:atlas-agent` on opus at high effort with `question.md`, the how's
+4. Spawn one `geovane:delegate` on opus at high effort with `question.md`, the how's
    explanation and the research files. It writes `<run folder>/options.md`: at least two options,
    each with how it works, who uses it, what it costs to build, to run and to reverse, how it fits
    the code here and the principles in `../principles.md`, and its risks; then the recommendation,

@@ -5,7 +5,7 @@ description: "Use for \"how does X work\", code walkthroughs before changing som
 
 # How
 
-You hand the question to a coordinator and read its answer. The coordinator is an `geovane:atlas-agent`
+You hand the question to a coordinator and read its answer. The coordinator is an `geovane:delegate`
 on opus at medium effort: it sends explorers to read the code and writes the explanation. You
 read no code for it.
 

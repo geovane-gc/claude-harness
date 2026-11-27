@@ -5,7 +5,7 @@ argument-hint: "<the facts or a file that holds them, or \"the whole docs\"> [th
 context: fork
 background: false
 model: sonnet
-agent: geovane:atlas-agent
+agent: geovane:delegate
 ---
 
 Write into the repo's docs, in the folder the caller names, or the current directory when it names

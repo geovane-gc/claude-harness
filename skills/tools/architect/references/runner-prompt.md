@@ -13,7 +13,7 @@ You read no code: explorers read it for you.
    ask which options the code already has for it: the existing types, fields, exceptions or
    precedents that could carry it ("which existing operation statuses could record a refused
    withdrawal").
-3. Group the questions by the code that answers them and spawn one `geovane:atlas-agent` explorer per group,
+3. Group the questions by the code that answers them and spawn one `geovane:delegate` explorer per group,
    on sonnet at medium effort, all in one message. Each gets
    `../../how/references/explorer-prompt.md` with its questions, the
    task's goal, the code (the repos and commits the explanation's first line names), what the

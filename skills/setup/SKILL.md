@@ -34,7 +34,7 @@ Tell the user, once, what changes in their sessions:
 
 - Inside this plugin's agents, `git push --force`, `rm -r`, `git reset --hard` and other commands
   that throw away work are blocked, with the recoverable way in the message.
-- A spawn of `geovane:atlas-agent` must name a model (sonnet or opus) and an effort (medium or
+- A spawn of `geovane:delegate` must name a model (sonnet or opus) and an effort (medium or
   high); the plugin's other agents keep the model and effort of their own definition.
 
 Nothing outside the plugin's agents is blocked.

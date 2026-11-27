@@ -3,7 +3,7 @@ pull request on GitHub for bugs: this review looks at what it cannot see.
 
 1. Run step 1 of the **PR babysit** playbook, then check the worktree's HEAD against the pull
    request's head commit. When they differ, fetch and check that commit out in the worktree.
-2. Spawn a `geovane:atlas-agent` on opus at high effort with the worktree, the pull
+2. Spawn a `geovane:delegate` on opus at high effort with the worktree, the pull
    request's URL, the task it names and the reviews already on it. Brief it to weigh each
    finding by the repo's `REVIEW.md` (when the repo has none: 🔴 Important, 🟡 Nit,
    🟣 Pre-existing), and to review through these lenses, after the ones the request names:

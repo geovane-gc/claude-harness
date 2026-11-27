@@ -77,7 +77,7 @@ Antes de um playbook de código, o engine lê as regras do próprio repo (`CLAUD
 | `geovane:engineer` | Escreve teste e código num worktree (`<repo>/.claude/worktrees/`). Teste vermelho, depois verde. Não commita: quem commita é a skill `commit`. |
 | `geovane:judge` (+ `judge-finder`, `judge-verifier`) | Julga um artefato contra uma rubrica. Só ficam os achados que sobrevivem à verificação. |
 | `geovane:cleaner` | Revisa texto de harness (skill, agente, doc) cortando ruído para quem lê. |
-| `geovane:atlas-agent` | Delegado genérico. Quem chama precisa dizer o modelo (sonnet/opus) e o effort. |
+| `geovane:delegate` | Delegado genérico. Quem chama precisa dizer o modelo (sonnet/opus) e o effort. |
 
 ## Hermes, o agente do Slack
 
@@ -100,7 +100,7 @@ depois da skill `geovane:commit`. Fora deles, a sua sessão fica como está.
 
 - `git-safety`: bloqueia force push, `rm -r`, `git reset --hard` e outros comandos que jogam
   trabalho fora, e diz o caminho recuperável. Também bloqueia o `git commit` do `engineer`.
-- `agent-model-cap`: um spawn do `atlas-agent` precisa dizer o modelo e o effort.
+- `agent-model-cap`: um spawn do `delegate` precisa dizer o modelo e o effort.
 - `agent-spawn-check`: recusa no spawn o que falharia dentro do agente.
 - `agent-wait`: depois de um spawn em background, quem chamou espera a resposta.
 - `commit-opened-watch`: quando a `/geovane:commit` abre um PR, a sessão começa a vigiá-lo.

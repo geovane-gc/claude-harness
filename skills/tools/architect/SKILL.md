@@ -25,7 +25,7 @@ Skip Phase A only when the work is genuinely greenfield with no surrounding syst
 
 ## Phase B: Sketch
 
-Spawn one `geovane:atlas-agent` runner on opus at high effort, with `references/runner-prompt.md` as its prompt, the design-sketch task (the goal and its constraints, never a candidate shape: a runner handed one judges it instead of designing), the Phase A grounding artifacts and the folder to write in. The run folder is the one the caller names, or `${user_config.workspace}/.runs/architect-<slug>/` when it names none, `<slug>` naming the design in a few words. The runner writes `<run folder>/architect/sketch.md` and `<run folder>/architect/rationale.md`.
+Spawn one `geovane:delegate` runner on opus at high effort, with `references/runner-prompt.md` as its prompt, the design-sketch task (the goal and its constraints, never a candidate shape: a runner handed one judges it instead of designing), the Phase A grounding artifacts and the folder to write in. The run folder is the one the caller names, or `${user_config.workspace}/.runs/architect-<slug>/` when it names none, `<slug>` naming the design in a few words. The runner writes `<run folder>/architect/sketch.md` and `<run folder>/architect/rationale.md`.
 
 Read the sketch end to end and screen it against [`references/design-red-flags.md`](references/design-red-flags.md). Assume the next contributor is an agent that sees only the files it opened, copies the nearest example, and takes the shortest path that compiles. Prefer the design where a change that looks right from one file is right for the whole repo.
 
