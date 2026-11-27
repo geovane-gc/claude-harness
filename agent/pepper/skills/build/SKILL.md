@@ -11,6 +11,9 @@ Your job is to deliver it, proven, as far as your limits allow, and to report it
 - ~/{{HOME_DIR_NAME}}/CONVENTIONS.md and knowledge/INDEX.md (then only the files you need). pepper/SPEC.md only
   for a change to {{AGENT_NAME}} itself (case A), and only the section about what you touch.
 - The item's source thread in #{{CONTROL_CHANNEL_NAME}} (ToolSearch select:mcp__claude_ai_Slack__slack_read_thread): what {{OWNER_FIRST_NAME}} asked, what {{AGENT_NAME}} proposed, what he agreed.
+- A Linear card the item or its thread links (ToolSearch select:mcp__claude_ai_Linear__get_issue,mcp__claude_ai_Linear__list_comments),
+  when this run lists the Linear tools: its description and comments are the scope. Read-only: the PR names the card's
+  identifier in its body; the card itself changes only on his order.
 - First check whether the item is still needed: a commit, PR or SPEC line may already cover it. If so, deliver nothing
   new; report it as done with the evidence (commit, file:line, test).
 

@@ -9,7 +9,9 @@ GUARD_SETTINGS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__
 
 
 def blocked_connectors(unblock=()):
-    return [f"mcp__claude_ai_{name}__*" for name in CONFIG["other_connectors"] if name not in unblock]
+    # Linear is blocked like any other connector unless the run unblocks it (lib/linear.py names which runs do).
+    names = dict.fromkeys([*CONFIG["other_connectors"], "Linear"])
+    return [f"mcp__claude_ai_{name}__*" for name in names if name not in unblock]
 
 
 def lean_command(prompt, model, skill_path, allowed, max_turns, disallowed=(), unblock=()):
