@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+import json
+import os
+import subprocess
+import sys
+import urllib.error
+import urllib.request
+
+BIN = os.path.dirname(os.path.realpath(__file__))
+CLAUDE = "/opt/homebrew/bin/claude"
+CLEAN = {"HOME": os.environ["HOME"], "USER": os.environ.get("USER", ""), "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"}
+
+
+def run(*command, timeout=60):
+    done = subprocess.run(list(command), capture_output=True, text=True, timeout=timeout, env=CLEAN)
+    return done.returncode, done.stdout.strip(), done.stderr.strip()
+
+
+def http_status(url, headers):
+    request = urllib.request.Request(url, headers=dict(headers, **{"User-Agent": "curl/8.7.1"}))
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            return response.status
+    except urllib.error.HTTPError as error:
+        return error.code
+    except Exception:
+        return 0
+
+
+def github_token():
+    fill = subprocess.run(["git", "credential", "fill"], input="protocol=https\nhost=github.com\n\n",
+                          capture_output=True, text=True, env=CLEAN)
+    return next((line[9:] for line in fill.stdout.splitlines() if line.startswith("password=")), "")
+
+
+def check_github():
+    token = github_token()
+    if not token:
+        return "error", "no GitHub credential in git's credential helper"
+    status = http_status("https://api.github.com/user", {"Authorization": f"token {token}"})
+    return ("ok", "") if status == 200 else ("error", f"GitHub API answered {status}")
+
+
+def check_claude():
+    code, out, _ = run(CLAUDE, "auth", "status")
+    try:
+        return ("ok", "") if json.loads(out).get("loggedIn") else ("action", "claude CLI logged out: {{OWNER_FIRST_NAME}} runs `claude` then /login")
+    except ValueError:
+        return "error", out[:200]
+
+
+def check_docker():
+    code, out, err = run("docker", "info", "--format", "{{.ServerVersion}}")
+    return ("ok", "") if code == 0 and out else ("warn", "Docker engine not running (integration tests need it)")
+
+
+def check_expired():
+    _, out, _ = run(f"{BIN}/secret", "list")
+    expired = [line.split()[0] for line in out.splitlines() if line.endswith("EXPIRED")]
+    return ("ok", "") if not expired else ("warn", "expired: " + ", ".join(expired))
+
+
+CHECKS = {
+    "claude-cli": check_claude,
+    "github": check_github,
+    "docker": check_docker,
+    "keychain expiries": check_expired,
+}
+
+
+def main():
+    results = []
+    for name, check in CHECKS.items():
+        try:
+            state, detail = check()
+        except Exception as failure:
+            state, detail = "error", repr(failure)[:200]
+        results.append({"check": name, "state": state, "detail": detail})
+    if "--json" in sys.argv:
+        print(json.dumps(results, ensure_ascii=False))
+    else:
+        for result in results:
+            print(f"{result['state']:6} {result['check']:22} {result['detail']}")
+    sys.exit(0 if all(r["state"] == "ok" for r in results) else 1)
+
+
+if __name__ == "__main__":
+    main()
