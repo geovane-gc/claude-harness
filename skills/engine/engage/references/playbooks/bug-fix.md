@@ -11,7 +11,7 @@ Every line that ships traces to evidence.
    sketch, it reads the trail's `decision` notes instead.
    Its failing test reproduces the bug.
 5. Prove the fix locally: the reproduction of step 1 now passes. When a caller or a partner saw
-   the bug, spawn a `geovane:atlas-agent` (sonnet, medium) with
+   the bug, spawn a `geovane:delegate` (sonnet, medium) with
    `../e2e-local.md` as its prompt, the worktree and the scenario. Run it even when the engineer's tests pass: they set up
    their own data and config, while this proof starts the service as it runs, drives it as its
    caller does and reads the outcome where it lives. A defect only in CI is proven

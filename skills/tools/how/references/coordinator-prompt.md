@@ -9,7 +9,7 @@ goes back for it.
    request names, one line each, numbered Q1, Q2… A question is concrete enough that an answer
    with a `file:line` settles it ("who reads `receiverBankAccount` after it is stored"). Leave out what the request lists as known or out of scope.
 3. Group the questions by the code that answers them, so that one explorer reads each part of the
-   code, and spawn one `geovane:atlas-agent` explorer per group, on sonnet at medium effort, all in one
+   code, and spawn one `geovane:delegate` explorer per group, on sonnet at medium effort, all in one
    message. Each gets
    `../references/explorer-prompt.md` with its questions, the
    request's Code, Goal and Already known, and its findings path `<output>/<group>.md`.

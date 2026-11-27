@@ -27,7 +27,7 @@ subagents (type, description, time) and ask which.
 
 ## 2. Hand it to a fresh reader
 
-Spawn one `geovane:atlas-agent` in the foreground, with
+Spawn one `geovane:delegate` in the foreground, with
 `model: sonnet`, `effort: high`, the transcript path, the run
 folder's `trail.md` and `cost.md` when it has them, and steps 3
 and 4. With a `cost.md`, also give it the transcript of the

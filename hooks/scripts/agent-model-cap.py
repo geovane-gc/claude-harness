@@ -2,7 +2,7 @@
 """PreToolUse hook on the Agent tool: every spawn of this plugin's agents runs on a model and effort someone chose.
 
 An agent of the plugin with a frontmatter (engineer, judge, cleaner and the rest) takes its model and
-effort from it: a call that tries to override them is denied. The delegate (atlas-agent) serves
+effort from it: a call that tries to override them is denied. The delegate serves
 every kind of job, so it has none: without a model and an effort in the call it takes the
 session's, often Opus at xhigh. Its call is denied until it names both, between sonnet at medium
 and opus at high.
@@ -16,7 +16,7 @@ import json
 import sys
 
 PLUGIN = 'geovane'
-DELEGATE = f'{PLUGIN}:atlas-agent'
+DELEGATE = f'{PLUGIN}:delegate'
 MODELS = ('sonnet', 'opus')
 EFFORTS = ('medium', 'high')
 GUIDE = (

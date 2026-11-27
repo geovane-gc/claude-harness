@@ -157,7 +157,7 @@ over-compressed line), and only the words that fix needs.
    candidates.
 3. Drop each candidate that an exception in its kind's definition
    or the Guards section covers.
-4. Spawn one `geovane:atlas-agent` with `model` opus, `effort`
+4. Spawn one `geovane:delegate` with `model` opus, `effort`
    high and no name. Give it the files, the path
    ${CLAUDE_PLUGIN_ROOT}/agents/cleaner.md and the numbered
    candidates. It keeps a candidate only when the quotes are in the

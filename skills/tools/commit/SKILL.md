@@ -6,7 +6,7 @@ argument-hint: "<worktree> [the task folder] [the task id] [a pull request that 
 context: fork
 background: false
 model: sonnet
-agent: geovane:atlas-agent
+agent: geovane:delegate
 allowed-tools: Bash(${CLAUDE_SKILL_DIR}/scripts/state.sh *), Bash(${CLAUDE_SKILL_DIR}/scripts/check-title.sh *), Bash(${CLAUDE_SKILL_DIR}/scripts/ship.sh *), Bash(${CLAUDE_SKILL_DIR}/scripts/open-pr.sh *), Bash(${CLAUDE_SKILL_DIR}/scripts/edit-body.sh *)
 ---
 

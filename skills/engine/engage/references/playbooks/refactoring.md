@@ -9,7 +9,7 @@ never inside it: it would break the pin. A redesign that changes behavior is a F
    today's behavior with tests that pass before any move, delete before it adds, move every caller of a
    changed interface in the same change with no shim, and check each rename in strings, docs and
    config.
-4. Prove that the behavior did not change, on the service running locally: spawn a `geovane:atlas-agent` (sonnet, medium) with
+4. Prove that the behavior did not change, on the service running locally: spawn a `geovane:delegate` (sonnet, medium) with
    `../e2e-local.md` as its prompt, the worktree and the scenario.
 5. Keep it only when the code got easier to read; otherwise revert it and stop.
 6. When the trail has a `docs` line, write it with the **spec** skill.

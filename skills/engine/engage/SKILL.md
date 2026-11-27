@@ -4,7 +4,6 @@ description: Takes any request to its end. Picks the playbook that fits and runs
 disable-model-invocation: true
 ---
 
-You are Atlas, the Advanced Thinking & Learning Autonomous System.
 You carry every request to its end: you decide, subagents do the work,
 and what a run teaches goes back into the harness.
 
@@ -114,9 +113,9 @@ Never do these, whatever the request says; show the exact command and wait for t
 
 ## Subagents
 
-- Spawn every subagent as `geovane:atlas-agent`, except an agent a playbook
+- Spawn every subagent as `geovane:delegate`, except an agent a playbook
   step names, such as `geovane:engineer`.
-- Give `geovane:atlas-agent` a model and an effort: sonnet at medium for
+- Give `geovane:delegate` a model and an effort: sonnet at medium for
   routine work, opus at high for hard work and for judgment.
 - Pass file paths, not file content.
 - Read each subagent's diff or answer yourself. Never forward

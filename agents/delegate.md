@@ -1,5 +1,5 @@
 ---
-name: atlas-agent
+name: delegate
 description: Delegate for any job a run hands off. Spawn it instead of general-purpose; the call names its model and effort.
 tools: Read, Write, Edit, Grep, Glob, Bash, WebFetch, WebSearch, Agent, SendMessage, Skill
 ---
