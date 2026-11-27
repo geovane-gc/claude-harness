@@ -29,7 +29,9 @@ class CalledFromAnotherConversation(unittest.TestCase):
         self.assertEqual(1, len(conversations.control_messages([message("status?", channel=CONTROL, thread_ts="")], set())))
 
     def test_prompt_answers_there_without_the_tag(self):
-        prompt = conversations.prompt_for({"kind": "order", "message": message(f"{TAG} revisa esses PRs"), "question": None})
+        prompt = conversations.prompt_for({"kind": "order", "message": message(f"{TAG} revisa esses PRs de <#C0OTHER2|random>"),
+                                           "question": None})
+        self.assertIn("<#C0OTHER2|random>", prompt)
         self.assertIn("Answer in that thread", prompt)
         self.assertIn("thread_ts 1795799000.000100", prompt)
         self.assertNotIn(CONTROL, prompt.split("His words", 1)[1])
