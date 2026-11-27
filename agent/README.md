@@ -38,13 +38,14 @@ de você, itens do backlog que pedem uma sessão), o que está em andamento, a s
 | PR minder | Seus PRs: CI vermelho → roda de novo os jobs falhos e tenta corrigir; verde e draft aberto pelo Claude → pronto para review; comentário novo → responde e pede review de novo. Merge só com `pr_minder_merge` ligado, nunca nos `no_merge_repos`. |
 | Build | Um item do backlog que você aprovou vira um commit no próprio agente ou um PR draft num repo seu, seguindo as regras do repo e os playbooks do `/geovane:engage`. |
 | Backlog, compromissos e conhecimento | O backlog guarda os seus pedidos maiores; os compromissos são as promessas que você fez no dia, lembradas no prazo; o conhecimento são fatos das conversas, guardados em `knowledge/` só depois do seu ✅. |
+| Linear | Com `linear` ligado: nas respostas a pessoas e nos builds ele lê cards (estado, responsável, comentários) como fonte; só uma ordem sua no canal de controle cria um card, atualiza um ou comenta. Card novo vai para o time que você disser, senão para `linear_team`. Nada é apagado: o guard do Linear recusa. |
 | Revisão do dia (19h) e Datadog (8h) | O resumo do dia com próximos passos numerados; as últimas 24h dos serviços em que você mais commita, com os nomes e ambientes de `datadog_service_names` e `datadog_envs`. |
 | Auditoria e red team | Toda sexta uma auditoria lê uma área do agente e vira itens do backlog; todo dia um corpus de ataques conhecidos roda contra os guards. |
 | Segurança | Guard de envio, guard de Bash, guard de leitura, segredos só no Keychain. As regras e onde cada uma é aplicada estão em `knowledge/security-policy.md`; os testes, em `pepper/guard/test_guards.py`. |
 
 ## Instalar
 
-Precisa de macOS, `claude` logado com o conector do Slack (e o do Datadog, se quiser o Datadog), `gh` logado, e o canal
+Precisa de macOS, `claude` logado com o conector do Slack (e o do Datadog e o do Linear, se quiser usá-los), `gh` logado, e o canal
 de controle criado. Com o plugin instalado (`/plugin install geovane@geovane-harness`), rode o `install.sh` desta
 pasta, de um clone de geovane-gc/claude-harness:
 
@@ -63,7 +64,7 @@ e copia tudo para `~/<pasta>`. Em seguida, ele:
 ## Depois
 
 1. Revise o `pepper/config.json`: mais organizações em `github_orgs`, os hosts que podem aparecer em links em
-   `allowed_link_hosts`, os nomes dos serviços no Datadog, os repos que nunca são mergeados (`no_merge_repos`).
+   `allowed_link_hosts`, os nomes dos serviços no Datadog, os repos que nunca são mergeados (`no_merge_repos`), o time do Linear para cards novos (`linear_team`) ou `linear: false` se não usa Linear.
 2. Segredos no Keychain com `bin/secret set <nome>`, nunca no config.
 3. `python3 pepper/watch.py --dry --since 240` e leia o que ele faria.
 4. Carregue o plist do launchd (`pepper/launchd/watch.plist`).

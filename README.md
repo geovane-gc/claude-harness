@@ -82,7 +82,7 @@ Antes de um playbook de código, o engine lê as regras do próprio repo (`CLAUD
 ## Hermes, o agente do Slack
 
 O Hermes 🪽 trabalha no Slack em seu nome: faz a triagem do que chega a você, responde o que confirmou na fonte e te
-pergunta o resto num canal privado, cuida dos seus PRs, revisa os PRs em que pedem a sua review, e manda a revisão do
+pergunta o resto num canal privado, lê e, quando você manda, abre ou atualiza cards no Linear, cuida dos seus PRs, revisa os PRs em que pedem a sua review, e manda a revisão do
 dia e os achados do Datadog. Ele roda numa pasta própria, fora do plugin, com o `launchd`. Workspace do Slack,
 organizações do GitHub, canais e serviços vêm do config da instalação.
 

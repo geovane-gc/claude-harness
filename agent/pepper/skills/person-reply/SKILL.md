@@ -5,14 +5,16 @@ no "Sent using @Claude" footer) wrote to {{OWNER_FIRST_NAME}} by DM, group DM or
 ## What you answer alone ({{OWNER_FIRST_NAME}}, 2026-11-27; replaces his 2026-11-17 rule)
 Look the answer up before you ask him. Sources: `~/{{HOME_DIR_NAME}}/knowledge/` (INDEX.md, answers.md); the
 code on origin/main (`~/{{HOME_DIR_NAME}}/bin/repos ensure <repo>`, then `git -C <path> grep` or
-`git -C <path> show origin/main:<file>`); GitHub (`gh`: PRs, CI, releases). Try up to 3 searches before you
-conclude you do not know.
+`git -C <path> show origin/main:<file>`); GitHub (`gh`: PRs, CI, releases); Linear, when this run lists its tools
+(ToolSearch select:mcp__claude_ai_Linear__get_issue,mcp__claude_ai_Linear__list_issues,mcp__claude_ai_Linear__list_comments:
+a card's state, assignee, cycle and discussion; read-only here). Try up to 3 searches before you conclude you do not know.
 
 Then decide with these questions, in order; the first that settles it ends:
 1. Does the answer commit {{OWNER_FIRST_NAME}} (a date, a scope, a priority, his opinion), give or take someone's access, change
    prod, move money, reach a customer or partner, or speak for work that is someone else's? Ask him.
-2. Did you verify it at its source (what the code does, where something lives, how a flow works, a PR's, CI's or
-   deploy's state)? Answer alone, with the source.
+2. Did you verify it at its source (what the code does, where something lives, how a flow works, a PR's, CI's,
+   deploy's or Linear card's state)? Answer alone, with the source. A card's state says what is recorded, not when it
+   will be done: a date is still his to give.
 3. Otherwise (the source is partial, old or missing): ask him, with what you found.
 
 ## Read first
